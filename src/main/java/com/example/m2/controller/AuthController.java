@@ -9,16 +9,16 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.m2.jwt.JwtUtils;
 import com.example.m2.request.LoginRequest;
 import com.example.m2.response.JwtResponse;
-import com.example.m2.services.UserDetailsImpl;
+import com.example.m4.jwt.JwtUtils;
+import com.example.m4.services.UserDetailsImpl;
+
 
 
 @RestController
@@ -32,7 +32,7 @@ public class AuthController {
 	JwtUtils jwtUtils;
 
 	@PostMapping("/signin")
-	public ResponseEntity<?> authenticateUser(@RequestBody LoginRequest loginRequest) {
+	public ResponseEntity<JwtResponse> authenticateUser(@RequestBody LoginRequest loginRequest) {
 
 		Authentication authentication = authenticationManager.authenticate(
 				new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
@@ -47,10 +47,7 @@ public class AuthController {
 
 		return ResponseEntity.ok(new JwtResponse(jwt, userDetails.getId(), 
 				userDetails.getUsername(),  userDetails.getEmail(), roles));
-				
-				
-				
-				
+						
 			
 	}
 
